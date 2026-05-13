@@ -1,0 +1,159 @@
+%General Mission Analysis Tool(GMAT) Script
+%Created: 2026-05-12 20:40:00
+
+
+%----------------------------------------
+%---------- Spacecraft
+%----------------------------------------
+
+Create Spacecraft TargetSV;
+GMAT TargetSV.DateFormat = UTCGregorian;
+GMAT TargetSV.Epoch = '21 Mar 2028 12:00:00.000';
+GMAT TargetSV.CoordinateSystem = EarthMJ2000Eq;
+GMAT TargetSV.DisplayStateType = Cartesian;
+GMAT TargetSV.X = 42164.15;
+GMAT TargetSV.Y = 0;
+GMAT TargetSV.Z = 0;
+GMAT TargetSV.VX = 0;
+GMAT TargetSV.VY = 3.07466458;
+GMAT TargetSV.VZ = 0;
+GMAT TargetSV.DryMass = 850;
+GMAT TargetSV.Cd = 2.2;
+GMAT TargetSV.Cr = 1.8;
+GMAT TargetSV.DragArea = 15;
+GMAT TargetSV.SRPArea = 1;
+GMAT TargetSV.SPADDragScaleFactor = 1;
+GMAT TargetSV.SPADSRPScaleFactor = 1;
+GMAT TargetSV.AtmosDensityScaleFactor = 1;
+GMAT TargetSV.ExtendedMassPropertiesModel = 'None';
+GMAT TargetSV.NAIFId = -10008001;
+GMAT TargetSV.NAIFIdReferenceFrame = -9008001;
+GMAT TargetSV.OrbitColor = Red;
+GMAT TargetSV.TargetColor = Teal;
+GMAT TargetSV.OrbitErrorCovariance = [ 1e+70 0 0 0 0 0 ; 0 1e+70 0 0 0 0 ; 0 0 1e+70 0 0 0 ; 0 0 0 1e+70 0 0 ; 0 0 0 0 1e+70 0 ; 0 0 0 0 0 1e+70 ];
+GMAT TargetSV.CdSigma = 1e+70;
+GMAT TargetSV.CrSigma = 1e+70;
+GMAT TargetSV.Id = 'SatId';
+GMAT TargetSV.Attitude = CoordinateSystemFixed;
+GMAT TargetSV.SPADSRPInterpolationMethod = Bilinear;
+GMAT TargetSV.SPADSRPScaleFactorSigma = 1e+70;
+GMAT TargetSV.SPADDragInterpolationMethod = Bilinear;
+GMAT TargetSV.SPADDragScaleFactorSigma = 1e+70;
+GMAT TargetSV.AtmosDensityScaleFactorSigma = 1e+70;
+GMAT TargetSV.ModelFile = 'aura.3ds';
+GMAT TargetSV.ModelOffsetX = 0;
+GMAT TargetSV.ModelOffsetY = 0;
+GMAT TargetSV.ModelOffsetZ = 0;
+GMAT TargetSV.ModelRotationX = 0;
+GMAT TargetSV.ModelRotationY = 0;
+GMAT TargetSV.ModelRotationZ = 0;
+GMAT TargetSV.ModelScale = 1;
+GMAT TargetSV.AttitudeDisplayStateType = 'Quaternion';
+GMAT TargetSV.AttitudeRateDisplayStateType = 'AngularVelocity';
+GMAT TargetSV.AttitudeCoordinateSystem = EarthMJ2000Eq;
+GMAT TargetSV.EulerAngleSequence = '321';
+
+%----------------------------------------
+%---------- ForceModels
+%----------------------------------------
+
+Create ForceModel DefaultProp_ForceModel;
+GMAT DefaultProp_ForceModel.CentralBody = Earth;
+GMAT DefaultProp_ForceModel.PrimaryBodies = {Earth};
+GMAT DefaultProp_ForceModel.Drag = None;
+GMAT DefaultProp_ForceModel.SRP = Off;
+GMAT DefaultProp_ForceModel.RelativisticCorrection = Off;
+GMAT DefaultProp_ForceModel.ErrorControl = RSSStep;
+GMAT DefaultProp_ForceModel.GravityField.Earth.Degree = 4;
+GMAT DefaultProp_ForceModel.GravityField.Earth.Order = 4;
+GMAT DefaultProp_ForceModel.GravityField.Earth.StmLimit = 100;
+GMAT DefaultProp_ForceModel.GravityField.Earth.PotentialFile = 'JGM2.cof';
+GMAT DefaultProp_ForceModel.GravityField.Earth.TideModel = 'None';
+
+%----------------------------------------
+%---------- Propagators
+%----------------------------------------
+
+Create Propagator DefaultProp;
+GMAT DefaultProp.FM = DefaultProp_ForceModel;
+GMAT DefaultProp.Type = RungeKutta89;
+GMAT DefaultProp.InitialStepSize = 60;
+GMAT DefaultProp.Accuracy = 9.999999999999999e-12;
+GMAT DefaultProp.MinStep = 0.001;
+GMAT DefaultProp.MaxStep = 2700;
+GMAT DefaultProp.MaxStepAttempts = 50;
+GMAT DefaultProp.StopIfAccuracyIsViolated = true;
+
+%----------------------------------------
+%---------- Subscribers
+%----------------------------------------
+
+Create OrbitView DefaultOrbitView;
+GMAT DefaultOrbitView.SolverIterations = Current;
+GMAT DefaultOrbitView.UpperLeft = [ 0.001574307304785894 0 ];
+GMAT DefaultOrbitView.Size = [ 0.5 0.4501884760366182 ];
+GMAT DefaultOrbitView.RelativeZOrder = 107;
+GMAT DefaultOrbitView.Maximized = false;
+GMAT DefaultOrbitView.Add = {TargetSV, Earth};
+GMAT DefaultOrbitView.CoordinateSystem = EarthMJ2000Eq;
+GMAT DefaultOrbitView.DrawObject = [ true true ];
+GMAT DefaultOrbitView.DataCollectFrequency = 1;
+GMAT DefaultOrbitView.UpdatePlotFrequency = 50;
+GMAT DefaultOrbitView.NumPointsToRedraw = 0;
+GMAT DefaultOrbitView.ShowPlot = true;
+GMAT DefaultOrbitView.MaxPlotPoints = 20000;
+GMAT DefaultOrbitView.ShowLabels = true;
+GMAT DefaultOrbitView.ViewPointReference = Earth;
+GMAT DefaultOrbitView.ViewPointVector = [ 30000 0 0 ];
+GMAT DefaultOrbitView.ViewDirection = Earth;
+GMAT DefaultOrbitView.ViewScaleFactor = 1;
+GMAT DefaultOrbitView.ViewUpCoordinateSystem = EarthMJ2000Eq;
+GMAT DefaultOrbitView.ViewUpAxis = Z;
+GMAT DefaultOrbitView.EclipticPlane = Off;
+GMAT DefaultOrbitView.XYPlane = On;
+GMAT DefaultOrbitView.WireFrame = Off;
+GMAT DefaultOrbitView.Axes = On;
+GMAT DefaultOrbitView.Grid = Off;
+GMAT DefaultOrbitView.SunLine = Off;
+GMAT DefaultOrbitView.UseInitialView = On;
+GMAT DefaultOrbitView.StarCount = 7000;
+GMAT DefaultOrbitView.EnableStars = On;
+GMAT DefaultOrbitView.EnableConstellations = On;
+
+Create GroundTrackPlot DefaultGroundTrackPlot;
+GMAT DefaultGroundTrackPlot.SolverIterations = Current;
+GMAT DefaultGroundTrackPlot.UpperLeft = [ 0.001574307304785894 0.4523424878836834 ];
+GMAT DefaultGroundTrackPlot.Size = [ 0.5 0.4501884760366182 ];
+GMAT DefaultGroundTrackPlot.RelativeZOrder = 86;
+GMAT DefaultGroundTrackPlot.Maximized = false;
+GMAT DefaultGroundTrackPlot.Add = {TargetSV};
+GMAT DefaultGroundTrackPlot.DataCollectFrequency = 1;
+GMAT DefaultGroundTrackPlot.UpdatePlotFrequency = 50;
+GMAT DefaultGroundTrackPlot.NumPointsToRedraw = 0;
+GMAT DefaultGroundTrackPlot.ShowPlot = true;
+GMAT DefaultGroundTrackPlot.MaxPlotPoints = 20000;
+GMAT DefaultGroundTrackPlot.CentralBody = Earth;
+GMAT DefaultGroundTrackPlot.TextureMap = 'ModifiedBlueMarble.jpg';
+
+% Initial Calculations
+Create Variable pi2 d2r mu;
+Create Variable geoAltitude;
+Create Variable initialDistance;
+Create Variable finalDistance;
+
+BeginScript 'Initial calculations'
+
+   GMAT pi2 = 6.283185307179586;
+   GMAT d2r = .017453292519943295770;
+   GMAT mu = 398600.4415;
+	GMAT geoAltitude = 46124.15; % km
+
+EndScript;
+
+
+%----------------------------------------
+%---------- Mission Sequence
+%----------------------------------------
+
+BeginMissionSequence;
+Propagate DefaultProp(TargetSV) {TargetSV.ElapsedDays = 3};
