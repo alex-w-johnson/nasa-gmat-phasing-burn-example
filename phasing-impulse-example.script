@@ -75,8 +75,8 @@ GMAT ChaserSV.AtmosDensityScaleFactor = 1;
 GMAT ChaserSV.ExtendedMassPropertiesModel = 'None';
 GMAT ChaserSV.NAIFId = -10008001;
 GMAT ChaserSV.NAIFIdReferenceFrame = -9008001;
-GMAT ChaserSV.OrbitColor = Blue;
-GMAT ChaserSV.TargetColor = Blue;
+GMAT ChaserSV.OrbitColor = Cyan;
+GMAT ChaserSV.TargetColor = Cyan;
 GMAT ChaserSV.OrbitErrorCovariance = [ 1e+70 0 0 0 0 0 ; 0 1e+70 0 0 0 0 ; 0 0 1e+70 0 0 0 ; 0 0 0 1e+70 0 0 ; 0 0 0 0 1e+70 0 ; 0 0 0 0 0 1e+70 ];
 GMAT ChaserSV.CdSigma = 1e+70;
 GMAT ChaserSV.CrSigma = 1e+70;
@@ -99,6 +99,9 @@ GMAT ChaserSV.AttitudeDisplayStateType = 'Quaternion';
 GMAT ChaserSV.AttitudeRateDisplayStateType = 'AngularVelocity';
 GMAT ChaserSV.AttitudeCoordinateSystem = EarthMJ2000Eq;
 GMAT ChaserSV.EulerAngleSequence = '321';
+
+
+
 
 
 
@@ -191,9 +194,9 @@ GMAT DC1.Algorithm = NewtonRaphson;
 
 Create OrbitView DefaultOrbitView;
 GMAT DefaultOrbitView.SolverIterations = Current;
-GMAT DefaultOrbitView.UpperLeft = [ 0 0 ];
-GMAT DefaultOrbitView.Size = [ 0.5 0.4505996573386636 ];
-GMAT DefaultOrbitView.RelativeZOrder = 625;
+GMAT DefaultOrbitView.UpperLeft = [ 0 0.001077005923532579 ];
+GMAT DefaultOrbitView.Size = [ 0.5 0.4507269789983845 ];
+GMAT DefaultOrbitView.RelativeZOrder = 612;
 GMAT DefaultOrbitView.Maximized = false;
 GMAT DefaultOrbitView.Add = {TargetSV, ChaserSV, Earth};
 GMAT DefaultOrbitView.CoordinateSystem = EarthMJ2000Eq;
@@ -221,30 +224,15 @@ GMAT DefaultOrbitView.StarCount = 7000;
 GMAT DefaultOrbitView.EnableStars = On;
 GMAT DefaultOrbitView.EnableConstellations = On;
 
-Create GroundTrackPlot DefaultGroundTrackPlot;
-GMAT DefaultGroundTrackPlot.SolverIterations = Current;
-GMAT DefaultGroundTrackPlot.UpperLeft = [ 0 0.4477441462021702 ];
-GMAT DefaultGroundTrackPlot.Size = [ 0.4673726388093875 0.4860079954311822 ];
-GMAT DefaultGroundTrackPlot.RelativeZOrder = 620;
-GMAT DefaultGroundTrackPlot.Maximized = false;
-GMAT DefaultGroundTrackPlot.Add = {TargetSV, ChaserSV};
-GMAT DefaultGroundTrackPlot.DataCollectFrequency = 1;
-GMAT DefaultGroundTrackPlot.UpdatePlotFrequency = 50;
-GMAT DefaultGroundTrackPlot.NumPointsToRedraw = 0;
-GMAT DefaultGroundTrackPlot.ShowPlot = true;
-GMAT DefaultGroundTrackPlot.MaxPlotPoints = 20000;
-GMAT DefaultGroundTrackPlot.CentralBody = Earth;
-GMAT DefaultGroundTrackPlot.TextureMap = 'ModifiedBlueMarble.jpg';
-
 Create ReportFile ReportFile1;
 GMAT ReportFile1.SolverIterations = None;
-GMAT ReportFile1.UpperLeft = [ 0.06496851745850028 0.1296402055968018 ];
-GMAT ReportFile1.Size = [ 0.5993131081854608 0.7989720159908623 ];
-GMAT ReportFile1.RelativeZOrder = 696;
+GMAT ReportFile1.UpperLeft = [ 0.2892265193370166 0.148626817447496 ];
+GMAT ReportFile1.Size = [ 0.5980662983425414 0.7964458804523424 ];
+GMAT ReportFile1.RelativeZOrder = 653;
 GMAT ReportFile1.Maximized = false;
 GMAT ReportFile1.Filename = 'ReportFile1.txt';
 GMAT ReportFile1.Precision = 16;
-GMAT ReportFile1.Add = {ChaserSV.ElapsedSecs, calculatedStartingDistance, calculatedFinalDistance};
+GMAT ReportFile1.Add = {ChaserSV.ElapsedSecs, calculatedStartingDistance, calculatedFinalDistance, insertionBurnDeltaV, circularizationBurnDeltaV, totalDeltaVRequired};
 GMAT ReportFile1.WriteHeaders = true;
 GMAT ReportFile1.LeftJustify = On;
 GMAT ReportFile1.ZeroFill = Off;
@@ -253,15 +241,46 @@ GMAT ReportFile1.Delimiter = ' ';
 GMAT ReportFile1.ColumnWidth = 23;
 GMAT ReportFile1.WriteReport = true;
 
+Create OrbitView OrbitView1;
+GMAT OrbitView1.SolverIterations = Current;
+GMAT OrbitView1.UpperLeft = [ 0.01602209944751381 0.4728056004308024 ];
+GMAT OrbitView1.Size = [ 0.5 0.4501884760366182 ];
+GMAT OrbitView1.RelativeZOrder = 617;
+GMAT OrbitView1.Maximized = false;
+GMAT OrbitView1.Add = {TargetSV, ChaserSV};
+GMAT OrbitView1.CoordinateSystem = TargetRSW;
+GMAT OrbitView1.DrawObject = [ true true ];
+GMAT OrbitView1.DataCollectFrequency = 1;
+GMAT OrbitView1.UpdatePlotFrequency = 50;
+GMAT OrbitView1.NumPointsToRedraw = 0;
+GMAT OrbitView1.ShowPlot = true;
+GMAT OrbitView1.MaxPlotPoints = 20000;
+GMAT OrbitView1.ShowLabels = true;
+GMAT OrbitView1.ViewPointReference = ChaserSV;
+GMAT OrbitView1.ViewPointVector = [ 0 0 300 ];
+GMAT OrbitView1.ViewDirection = TargetSV;
+GMAT OrbitView1.ViewScaleFactor = 1;
+GMAT OrbitView1.ViewUpCoordinateSystem = TargetRSW;
+GMAT OrbitView1.ViewUpAxis = X;
+GMAT OrbitView1.EclipticPlane = Off;
+GMAT OrbitView1.XYPlane = On;
+GMAT OrbitView1.WireFrame = Off;
+GMAT OrbitView1.Axes = On;
+GMAT OrbitView1.Grid = On;
+GMAT OrbitView1.SunLine = Off;
+GMAT OrbitView1.UseInitialView = On;
+GMAT OrbitView1.StarCount = 7000;
+GMAT OrbitView1.EnableStars = On;
+GMAT OrbitView1.EnableConstellations = On;
+
 %----------------------------------------
 %---------- Arrays, Variables, Strings
 %----------------------------------------
-
-Create Array rChaserInitial[3,1] vChaserInitial[3,1];
-
-% Initial Calculations
 Create Variable pi2 d2r mu siderealDaySeconds geoRadius vGEO initialDistance finalDistance deltaThetaInitial deltaThetaFinal;
-Create Variable tPhasing totalChangeInChaserLongitude omegaEarth smaPhasing initialCoastTime insertionBurnMagnitude circularizationBurnMagnitude calculatedStartingDistance calculatedFinalDistance calculatedCurrentDistance;
+Create Variable tPhasing totalChangeInChaserLongitude omegaEarth smaPhasing initialCoastTime calculatedStartingDistance calculatedFinalDistance calculatedCurrentDistance insertionBurnDeltaV circularizationBurnDeltaV;
+Create Variable totalDeltaVRequired;
+
+
 
 
 %----------------------------------------
@@ -302,14 +321,18 @@ Propagate DefaultProp(TargetSV, ChaserSV) {TargetSV.ElapsedSecs = initialCoastTi
 Target 'Lower and Circularize After One Rev' DC1 {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
    GMAT calculatedStartingDistance = sqrt( (TargetSV.X-ChaserSV.X)^2 + (TargetSV.Y-ChaserSV.Y)^2 + (TargetSV.Z-ChaserSV.Z)^2);
    Vary 'Vary Insertion Burn Delta-V' DC1(ChaserInsertionBurn.Element1 = -0.1, {Perturbation = 0.0001, Lower = -0.5, Upper = 0.5, MaxStep = 0.001, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   GMAT insertionBurnDeltaV = abs(ChaserInsertionBurn.Element1);
    Maneuver 'Apply Insertion Burn' ChaserInsertionBurn(ChaserSV);
-   Achieve 'Achieve Transfer Semimajor Axis' DC1(ChaserSV.SMA = smaPhasing, {Tolerance = 0.1});
+   Achieve 'Achieve Transfer Semimajor Axis' DC1(ChaserSV.SMA = smaPhasing, {Tolerance = 0.001});
    Propagate 'Prop to Perigee' DefaultProp(TargetSV, ChaserSV) {ChaserSV.Periapsis};
    Propagate 'Prop to Apogee' DefaultProp(TargetSV, ChaserSV) {ChaserSV.Apoapsis};
    Vary 'Vary Circularization Burn' DC1(ChaserCircularizationBurn.Element1 = 0.1, {Perturbation = 0.0001, Lower = -0.5, Upper = 0.5, MaxStep = 0.001, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   GMAT circularizationBurnDeltaV = abs(ChaserCircularizationBurn.Element1);
+   GMAT totalDeltaVRequired = insertionBurnDeltaV+circularizationBurnDeltaV;
    Maneuver 'Apply Circularization Burn' ChaserCircularizationBurn(ChaserSV);
-   Achieve 'Achieve Circular orbit' DC1(ChaserSV.ECC = 0, {Tolerance = 0.01});
+   Achieve 'Achieve Circular orbit' DC1(ChaserSV.ECC = 0, {Tolerance = 0.001});
    GMAT calculatedFinalDistance = sqrt( (TargetSV.X-ChaserSV.X)^2 + (TargetSV.Y-ChaserSV.Y)^2 + (TargetSV.Z-ChaserSV.Z)^2);
 EndTarget;  % For targeter DC1
 
-Propagate DefaultProp(TargetSV, ChaserSV) {TargetSV.ElapsedDays = 1};
+%Propagate DefaultProp(TargetSV, ChaserSV) {TargetSV.ElapsedDays = 1};
+
