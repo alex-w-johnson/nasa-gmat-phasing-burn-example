@@ -100,13 +100,6 @@ GMAT ChaserSV.AttitudeRateDisplayStateType = 'AngularVelocity';
 GMAT ChaserSV.AttitudeCoordinateSystem = EarthMJ2000Eq;
 GMAT ChaserSV.EulerAngleSequence = '321';
 
-
-
-
-
-
-
-
 %----------------------------------------
 %---------- ForceModels
 %----------------------------------------
@@ -280,13 +273,9 @@ Create Variable pi2 d2r mu siderealDaySeconds geoRadius vGEO initialDistance fin
 Create Variable tPhasing totalChangeInChaserLongitude omegaEarth smaPhasing initialCoastTime calculatedStartingDistance calculatedFinalDistance calculatedCurrentDistance insertionBurnDeltaV circularizationBurnDeltaV;
 Create Variable totalDeltaVRequired;
 
-
-
-
 %----------------------------------------
 %---------- Mission Sequence
 %----------------------------------------
-
 
 BeginMissionSequence;
 
@@ -310,7 +299,6 @@ BeginScript 'Initial calculations'
    GMAT calculatedStartingDistance = sqrt( (TargetSV.X-ChaserSV.X)^2 + (TargetSV.Y-ChaserSV.Y)^2 + (TargetSV.Z-ChaserSV.Z)^2);
 EndScript;
 
-
 %----------------------------------------
 %---------- Mission Sequence
 %----------------------------------------
@@ -318,6 +306,7 @@ EndScript;
 % Propagate orbit forward by 15 minutes (earliest opportunity to perform burn)
 Propagate DefaultProp(TargetSV, ChaserSV) {TargetSV.ElapsedSecs = initialCoastTime};
 
+% Note: I have adapted this loop from identical structure for the Hohmann Transfer example file, feel free to explore it and other examples if you have R2022a or newer
 Target 'Lower and Circularize After One Rev' DC1 {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
    GMAT calculatedStartingDistance = sqrt( (TargetSV.X-ChaserSV.X)^2 + (TargetSV.Y-ChaserSV.Y)^2 + (TargetSV.Z-ChaserSV.Z)^2);
    Vary 'Vary Insertion Burn Delta-V' DC1(ChaserInsertionBurn.Element1 = -0.1, {Perturbation = 0.0001, Lower = -0.5, Upper = 0.5, MaxStep = 0.001, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
